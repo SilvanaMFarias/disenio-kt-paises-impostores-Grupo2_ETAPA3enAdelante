@@ -11,8 +11,8 @@ import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 
 class ObservatorioTest : DescribeSpec ({
 
-  // Observatorio.reset()
-  /*
+  Observatorio.reset()
+
   val argentina = Pais( "Argentina", "ARG",47000000, 2780400.0, "America",
     "ARS", 222.75, listOf("UNASUR", "MERCOSUR"), listOf("español","guarani","qom")
   )
@@ -47,7 +47,7 @@ class ObservatorioTest : DescribeSpec ({
     Observatorio.agregarPais(australia)
     Observatorio.agregarPais(groenlandia)
     Observatorio.agregarPais(islandia)
-  */
+
 
   describe("Test de Observatorio") {
 

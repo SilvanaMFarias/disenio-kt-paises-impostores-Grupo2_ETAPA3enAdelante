@@ -3,35 +3,6 @@ package ar.edu.unahur.obj2.impostoresPaises
 import ar.edu.unahur.obj2.impostoresPaises.api.Country
 import ar.edu.unahur.obj2.impostoresPaises.api.RestCountriesAPI
 
-interface interfaceAPI {
-	fun todosLosPaises(): List<Pais>
-
-  fun buscarPaisesPorNombre(nombre: String): List<Pais>
-
-  fun paisConCodigo(codigoIso3: String): Pais    
-}
-
-class AdaptadorAPI(val adaptee: RestCountriesAPI): interfaceAPI {
-    
-	override fun todosLosPaises(): List<Pais> {
-    val allCountries: List<Country>
-    allCountries = adaptee.todosLosPaises()
-    TODO("Ya estan los datos pedidos a la API, falta transformalos a lista de Paises.")
-  }
-
-  override fun buscarPaisesPorNombre(nombre: String): List<Pais> {
-    val countries: List<Country>
-    countries = adaptee.buscarPaisesPorNombre(nombre)
-    TODO("Ya estan los datos pedidos a la API, falta transformalos a lista de Paises.")
-  }
-
-  override fun paisConCodigo(codigoIso3: String): Pais {
-    val country: Country
-    country = adaptee.paisConCodigo(codigoIso3)
-    TODO("Ya estan los datos pedidos a la API, falta transformalos a Pais.")
-  }
-}
-
 /*
  * Etapa 2 - Observatorio
  * Crear al Observatorio, que es un objeto que conoce a todos los países y debe 
@@ -42,33 +13,11 @@ class AdaptadorAPI(val adaptee: RestCountriesAPI): interfaceAPI {
  * object que simplifica la implementación del patrón.
  */
 object Observatorio {
-  var paises :List<Pais>
+  var paises = mutableListOf<Pais>()
 
-  // Etapa 3 - Etapa 3 - Conectando con el mundo real 
- 
-  // Servicio a adaptar.
-  val api = RestCountriesAPI()
-  // Servicio adaptado.
-  val apiAdaptada = AdaptadorAPI(api)
-      // A partir de acá podemos utilizar los metodos de API pero nos va a devolver
-      // en vez del formato <Country> devuelve <Pais> gracias al adaptador.
-      //
-      // Ejemplo: 	apiAdaptada.todosLosPaises(): List<Pais>
-      //            apiAdaptada.buscarPaisesPorNombre("Argentina"): List<Pais>
-      //            apiAdaptada.paisConCodigo("ARG"): Pais
+  fun reset() { paises = mutableListOf<Pais>()}
 
-  // IMPORTANTE: Solamente al inicializar el Singleton se accede a la API por
-  // intermedio del adaptador para llenar la lista países con los datos que
-  // devuelve el servicio.
-  init {
-    paises = apiAdaptada.todosLosPaises()
-  }
-
-  // Probablemente no se utilize más este método, ya que la lista es fija.
-  // fun reset() { paises = mutableListOf<Pais>()}
-
-  // Probablemente no se utilize más este método, ya que la lista es fija.
-  // fun agregarPais(pais: Pais) = paises.add(pais)
+  fun agregarPais(pais: Pais) = paises.add(pais)
 
   fun esPais(nombrePais: String): Boolean = paises.any { p -> p.nombre == nombrePais }
 
