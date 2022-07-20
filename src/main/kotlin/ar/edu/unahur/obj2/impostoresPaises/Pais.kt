@@ -13,10 +13,10 @@ class Pais(
   var cotizacionDolar: Double,
   val bloquesRegionales: List<String>,
   val idiomasOficiales: List<String>) {
-  val paisesLimitrofes: MutableList<Pais> = mutableListOf()
+  val paisesLimitrofes: MutableList<String> = mutableListOf()
 
   fun agregarPaisLimitrofe(pais: Pais) {
-      paisesLimitrofes.add(pais)
+      paisesLimitrofes.add(pais.codigoIso3)
   }
 /*
  * Acá creo un método que al asignar limítrofe
@@ -50,13 +50,17 @@ class Pais(
  * vecindad, tanto brasil.vecinoMasPoblado() como peru.vecinoMasPoblado() nos 
  * deberían dar como resultado brasil.
  */
-  fun vecinoMasPoblado(): Pais = (paisesLimitrofes + this).maxByOrNull { p -> p.poblacion }!!
-
+//  fun vecinoMasPoblado(): Pais = (paisesLimitrofes + this).maxByOrNull { p -> p.poblacion }!!
+fun vecinoMasPoblado(): Pais {
+  // Aca hay que utilizar la API para consultar los paises vecinos ya que perdemos la
+  // referencia por pasar solo el codigo ISO3.
+  return this //(paisesLimitrofes + this.codigoIso3)
+}
 /* Para dos países en particular:
  *
  * Poder consultar si son limítrofes.
  */ 
-  fun esLimitrofeDe(pais:Pais): Boolean = this.paisesLimitrofes.contains(pais)
+  fun esLimitrofeDe(pais:Pais): Boolean = this.paisesLimitrofes.contains(pais.codigoIso3)
 /*
  * Saber si necesitan traducción para poder dialogar. Esto ocurre si no 
  * comparten ninguno de sus idiomas oficiales.
