@@ -12,11 +12,42 @@ interface interfaceAPI {
 }
 
 class AdaptadorAPI(val adaptee: RestCountriesAPI): interfaceAPI {
-    
-	override fun todosLosPaises(): List<Pais> {
-    val allCountries: List<Country>
-    allCountries = adaptee.todosLosPaises()
-    TODO("Ya estan los datos pedidos a la API, falta transformalos a lista de Paises.")
+
+  override fun todosLosPaises(): MutableList<Pais> {
+    val allCountries: List<Country> = adaptee.todosLosPaises()
+    val todosLosPaises: MutableList<Pais> = mutableListOf()
+    var nombre: String
+    var codigoIso3: String
+    var poblacion: Int
+    var superficie: Double
+    var continente: String
+    var codigoMoneda: String
+    var cotizacionDolar: Double
+    var bloquesRegionales: List<String>
+    var idiomasOficiales: List<String>
+    var paisesLimitrofes: MutableList<String>
+    var pais: Pais
+
+    allCountries.forEach {
+      nombre = it.name
+      codigoIso3 = it.alpha3Code
+      poblacion = it.population.toInt()//Redefinir a poblacion como long
+      superficie = 0.00//it.area ?: it.population.toDouble()-Redefinir superficie como long
+      continente = it.region
+      codigoMoneda= "USD"//if (it.currencies?.first()?.code.orEmpty().isEmpty()) it.currencies!!.first().code else "USD"
+      cotizacionDolar=0.00
+      bloquesRegionales= it.regionalBlocs!!.map{ b->b.name }
+      idiomasOficiales= it.languages.map{ b->b.name }
+      paisesLimitrofes= mutableListOf<String>()//it.borders*/
+
+      pais = Pais(nombre, codigoIso3, poblacion, superficie, continente, codigoMoneda, cotizacionDolar, bloquesRegionales, idiomasOficiales)
+      pais.paisesLimitrofes.addAll(paisesLimitrofes)
+
+      todosLosPaises.add(pais)
+    }
+
+    //TODO("Ya estan los datos pedidos a la API, falta transformalos a lista de Paises.")
+    return todosLosPaises
   }
 
   override fun buscarPaisesPorNombre(nombre: String): List<Pais> {
