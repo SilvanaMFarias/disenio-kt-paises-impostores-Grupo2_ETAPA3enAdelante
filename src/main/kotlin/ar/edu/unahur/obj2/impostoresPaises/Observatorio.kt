@@ -38,12 +38,12 @@ class AdaptadorAPI(val adaptee: RestCountriesAPI): interfaceAPI {
       superficie = 0.00//it.area ?: it.population.toDouble()-Redefinir superficie como long
       continente = it.region
       codigoMoneda= "USD"//if (it.currencies?.first()?.code.orEmpty().isEmpty()) it.currencies!!.first().code else "USD"
-      cotizacionDolar=0.00
+      //cotizacionDolar=0.00
       bloquesRegionales= it.regionalBlocs!!.map{ b->b.name }
       idiomasOficiales= it.languages.map{ b->b.name }
       paisesLimitrofes= mutableListOf<String>()//it.borders*/
 
-      pais = Pais(nombre, codigoIso3, poblacion, superficie, continente, codigoMoneda, cotizacionDolar, bloquesRegionales, idiomasOficiales)
+      pais = Pais(nombre, codigoIso3, poblacion, superficie, continente, codigoMoneda, bloquesRegionales, idiomasOficiales)
       pais.paisesLimitrofes.addAll(paisesLimitrofes)
 
       todosLosPaises.add(pais)
@@ -78,11 +78,7 @@ class AdaptadorAPI(val adaptee: RestCountriesAPI): interfaceAPI {
 object Observatorio {
   var paises :List<Pais> = listOf<Pais>()
   // Etapa 3 - Etapa 3 - Conectando con el mundo real 
- 
-  // Servicio de cotizacion NO necesita adpater.
-  val apiCurrency = CurrencyConverterAPI(apiKey = "294dc89cf3f803ab8787")
-  var cotizacionPesoArgentino = apiCurrency.convertirDolarA("ARS")
-  
+
   // Servicio a adaptar.
   val apiCountry = RestCountriesAPI()
   // Servicio adaptado.

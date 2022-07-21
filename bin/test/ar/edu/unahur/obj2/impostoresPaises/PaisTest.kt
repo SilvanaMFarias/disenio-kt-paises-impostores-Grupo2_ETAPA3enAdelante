@@ -106,8 +106,8 @@ class PaisTest : DescribeSpec ({
       argentina.convieneIrDeComprasA(chile).shouldBeTrue()
       brasil.convieneIrDeComprasA(argentina).shouldBeTrue()
       chile.convieneIrDeComprasA(argentina).shouldBeFalse()
-      coreaDelSur.convieneIrDeComprasA(coreaDelNorte).shouldBeTrue()
-      coreaDelNorte.convieneIrDeComprasA(coreaDelSur).shouldBeFalse()
+      coreaDelSur.convieneIrDeComprasA(coreaDelNorte).shouldBeFalse()
+      coreaDelNorte.convieneIrDeComprasA(coreaDelSur).shouldBeTrue()
     }
 
     it("A cuanto equivale") {

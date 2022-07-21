@@ -12,28 +12,28 @@ import kotlinx.coroutines.internal.artificialFrame
 class PaisTest : DescribeSpec ({
 
   val argentina = Pais( "Argentina", "ARG",47000000, 2780400.0, "America",
-    "ARS", 222.75, listOf("UNASUR", "MERCOSUR"), listOf("español","guarani","qom")
+    "ARS",  listOf("UNASUR", "MERCOSUR"), listOf("español","guarani","qom")
   )
 
   val brasil = Pais("Brasil","BRA",208388000,8515770.00,"America",
-    "REA",5.41, listOf("UNASUR", "MERCOSUR"), listOf("portugues","español")
+    "BRL", listOf("UNASUR", "MERCOSUR"), listOf("portugues","español")
   )
 
   val chile = Pais("Chile","CHI",18430408,756950.00,"America",
-    "CHI",975.71, listOf("UNASUR"), listOf("español","rapanui")
+    "CLP", listOf("UNASUR"), listOf("español","rapanui")
   )
 
   val coreaDelNorte = Pais("Corea del Norte","CDN",25026772,120540.00,"Asia",
-    "WON",0.00905, listOf(), listOf("coreano")
+    "KPW", listOf(), listOf("coreano")
   )
 
   val coreaDelSur = Pais("Corea del Sur","CDs",51709000,100339.00,"Asia",
-    "WON",0.00903, listOf(), listOf("coreano")
+    "KRW", listOf(), listOf("coreano")
   )
 
   val islandia = Pais(
     "Islandia","ISL",457050,103000.0,"Europa",
-    "ISK", 1.23, listOf("OTAN"), listOf("ingles","islandes")
+    "ISK",  listOf("OTAN"), listOf("ingles","islandes")
   )
 
   argentina.agregarPaisLimitrofeMutuo(chile)
@@ -106,15 +106,14 @@ class PaisTest : DescribeSpec ({
       argentina.convieneIrDeComprasA(chile).shouldBeTrue()
       brasil.convieneIrDeComprasA(argentina).shouldBeTrue()
       chile.convieneIrDeComprasA(argentina).shouldBeFalse()
-      coreaDelSur.convieneIrDeComprasA(coreaDelNorte).shouldBeTrue()
-      coreaDelNorte.convieneIrDeComprasA(coreaDelSur).shouldBeFalse()
+      coreaDelSur.convieneIrDeComprasA(coreaDelNorte).shouldBeFalse()
+      coreaDelNorte.convieneIrDeComprasA(coreaDelSur).shouldBeTrue()
     }
 
     it("A cuanto equivale") {
-      argentina.aCuantoEquivaleEn(20000.00, brasil).shouldBe(485.74 plusOrMinus 0.01)
-      brasil.aCuantoEquivaleEn(485.74, argentina).shouldBe(20000.00 plusOrMinus 20.00)
-      argentina.aCuantoEquivaleEn(100000.00, chile).shouldBe(438029.18 plusOrMinus 0.01)
+      argentina.aCuantoEquivaleEn(20000.00, brasil).shouldBe(848.60 plusOrMinus 0.10)
+      brasil.aCuantoEquivaleEn(1485.00, argentina).shouldBe(35000.00 plusOrMinus 20.00)
+      argentina.aCuantoEquivaleEn(100000.00, chile).shouldBe(716750.00 plusOrMinus 10.00)
     }
-
   }
 })

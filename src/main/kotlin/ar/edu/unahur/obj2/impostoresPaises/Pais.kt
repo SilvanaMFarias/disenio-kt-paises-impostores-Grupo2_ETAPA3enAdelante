@@ -1,10 +1,12 @@
 package ar.edu.unahur.obj2.impostoresPaises
 
+import ar.edu.unahur.obj2.impostoresPaises.api.CurrencyConverterAPI
 import kotlin.math.roundToInt
 import kotlin.reflect.jvm.internal.impl.types.AbstractTypeCheckerContext.SupertypesPolicy.None
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.time.*
+import kotlin.math.absoluteValue
 
 class Pais(
   val nombre: String,
@@ -25,16 +27,15 @@ class Pais(
   var timeStampCotizacion = LocalTime.of(0,0,0)
   // intervalo entre consultas en minutos
   val intervalo: Int = 5
-  
+
+  fun pasoIntervaloEntreConsultas(actualTimeStamp :LocalTime): Boolean = (Duration.between(actualTimeStamp, timeStampCotizacion).getSeconds()/60).toInt().absoluteValue > intervalo
+
   fun cotizacionDolar(): Double {
-    // tomo la hora actual
-    val actualTimeStamp = LocalTime.now()
-    // verifico el timeOut
-    if(Duration.between(actualTimeStamp, timeStampCotizacion).getSeconds()/60 > intervalo)
+    if(pasoIntervaloEntreConsultas(LocalTime.now())) {
       // actualizo la ultima Cotizacion y su hora.
-      timeStampCotizacion = actualTimeStamp
-      ultimaCotizacionDolar = apiCurrency.convertirDolarA(codigoMoneda).toDouble()
-      
+      timeStampCotizacion = LocalTime.now()
+      ultimaCotizacionDolar = apiCurrency.convertirDolarA(codigoMoneda) ?: 0.0
+    }
     return ultimaCotizacionDolar
   }
   

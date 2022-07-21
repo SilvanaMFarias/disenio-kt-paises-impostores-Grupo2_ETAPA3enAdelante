@@ -8,7 +8,11 @@ import io.kotest.core.spec.style.DescribeSpec
 
 // Algunos ejemplos para que jueguen un poco
 // con lo que devuelve la API
+val apiCurrency = CurrencyConverterAPI(apiKey = "294dc89cf3f803ab8787")
+var cotizacionPesoArgentino = apiCurrency.convertirDolarA("ARS")
 
+cotizacionPesoArgentino
+/*
 val api = RestCountriesAPI()
 val adapt = AdaptadorAPI(api)
 adapt.adaptee.todosLosPaises()
@@ -50,7 +54,7 @@ allCountries.forEach {
 }
 
 todosLosPaises.map{n->n.nombre}
-
+*/
 
 
 
