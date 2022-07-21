@@ -28,7 +28,7 @@ class AdaptadorAPI(val adaptee: RestCountriesAPI): interfaceAPI {
     var cotizacionDolar: Double
     var bloquesRegionales: List<String>
     var idiomasOficiales: List<String>
-    var paisesLimitrofes: MutableList<String>
+    var paisesLimitrofes: List<String>
     var pais: Pais
 
     allCountries.forEach {
@@ -41,7 +41,7 @@ class AdaptadorAPI(val adaptee: RestCountriesAPI): interfaceAPI {
       //cotizacionDolar=0.00
       bloquesRegionales= it.regionalBlocs!!.map{ b->b.name }
       idiomasOficiales= it.languages.map{ b->b.name }
-      paisesLimitrofes= mutableListOf<String>()//it.borders*/
+      paisesLimitrofes= it.borders.orEmpty()
 
       pais = Pais(nombre, codigoIso3, poblacion, superficie, continente, codigoMoneda, bloquesRegionales, idiomasOficiales)
       pais.paisesLimitrofes.addAll(paisesLimitrofes)

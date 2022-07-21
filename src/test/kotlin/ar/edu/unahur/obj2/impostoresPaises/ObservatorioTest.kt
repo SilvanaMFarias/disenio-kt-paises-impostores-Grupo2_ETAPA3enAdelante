@@ -48,39 +48,53 @@ class ObservatorioTest : DescribeSpec ({
     Observatorio.agregarPais(groenlandia)
     Observatorio.agregarPais(islandia)
   */
+  // ¡para que haga el init Observatorio!
   Observatorio
+
   describe("Test de Observatorio") {
+    /*
     it("API adapter") {
       Observatorio.paises.size.shouldBe(250)
       Observatorio.paises.map{n->n.nombre}.shouldBe("")
     }
+
+    */
     it("Son limitrofes") {
-      Observatorio.sonLimitrofes("Argentina", "Brasil").shouldBeTrue()
-      Observatorio.sonLimitrofes("Chile", "Brasil").shouldBeFalse()
+      /*
+      Observatorio.esPais("Argentina").shouldBeTrue()
+      Observatorio.esPais("Brazil").shouldBeTrue()
+      Observatorio.esPais("Chile").shouldBeTrue()
+      Observatorio.obtenerPais("Argentina").paisesLimitrofes.shouldBe("Argentina")
+      Observatorio.obtenerPais("Brazil").paisesLimitrofes.shouldBe("Brazil")
+      Observatorio.obtenerPais("Chile").paisesLimitrofes.shouldBe("Chile")
+
+       */
+      Observatorio.sonLimitrofes("Argentina", "Brazil").shouldBeTrue()
+      Observatorio.sonLimitrofes("Chile", "Brazil").shouldBeFalse()
       shouldThrow<Exception> { Observatorio.sonLimitrofes("Argentina", "Disneyland") }
     }
 
     it("Necesitan traduccion") {
-      Observatorio.necesitanTraduccion("Argentina", "Brasil").shouldBeTrue()
+      Observatorio.necesitanTraduccion("Argentina", "Brazil").shouldBeTrue()
       Observatorio.necesitanTraduccion("Argentina", "Chile").shouldBeFalse()
       shouldThrow<Exception> { Observatorio.necesitanTraduccion("Argentina", "Disneyland") }
     }
 
     it("Son potenciales aliados") {
-      Observatorio.sonPotencialesAliados("Argentina", "Brasil").shouldBe(false)
+      Observatorio.sonPotencialesAliados("Argentina", "Brazil").shouldBe(false)
       Observatorio.sonPotencialesAliados("Argentina", "Chile").shouldBe(true)
       shouldThrow<Exception> { Observatorio.sonPotencialesAliados("Argentina", "Disneyland") }
     }
 
     it("Conviene ir de compras") {
-      Observatorio.convieneIrDeComprasDesdeA("Argentina", "Brasil").shouldBe(false)
-      Observatorio.convieneIrDeComprasDesdeA("Brasil", "Argentina").shouldBe(true)
-      shouldThrow<Exception> { Observatorio.convieneIrDeComprasDesdeA("Brasil", "Disneyland") }
+      Observatorio.convieneIrDeComprasDesdeA("Argentina", "Brazil").shouldBe(false)
+      Observatorio.convieneIrDeComprasDesdeA("Brazil", "Argentina").shouldBe(true)
+      shouldThrow<Exception> { Observatorio.convieneIrDeComprasDesdeA("Brazil", "Disneyland") }
     }
 
     it("A cuanto equivale") {
-      Observatorio.aCuantoEquivaleEn(20000.00, "Argentina", "Brasil").shouldBe(485.74 plusOrMinus 0.01)
-      Observatorio.aCuantoEquivaleEn(485.74, "Brasil", "Argentina").shouldBe(20000.00 plusOrMinus 20.00)
+      Observatorio.aCuantoEquivaleEn(20000.00, "Argentina", "Brazil").shouldBe(848.60 plusOrMinus 0.10)
+      Observatorio.aCuantoEquivaleEn(1485.00, "Brazil", "Argentina").shouldBe(35000.00 plusOrMinus 60.00)
       shouldThrow<Exception> { Observatorio.aCuantoEquivaleEn(20000.00, "Argentina", "Disneyland") }
     }
 
