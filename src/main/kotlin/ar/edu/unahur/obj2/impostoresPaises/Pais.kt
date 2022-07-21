@@ -4,6 +4,7 @@ import kotlin.math.roundToInt
 import kotlin.reflect.jvm.internal.impl.types.AbstractTypeCheckerContext.SupertypesPolicy.None
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.time.*
 
 class Pais(
   val nombre: String,
@@ -21,14 +22,19 @@ class Pais(
   val apiCurrency = CurrencyConverterAPI(apiKey = "294dc89cf3f803ab8787")
   
   var ultimaCotizacionDolar: Double = 0.0
-  var timeStampCotizacion: Date
-  val intervalo: Int = 10
+  var timeStampCotizacion = LocalTime.of(0,0,0)
+  // intervalo entre consultas en minutos
+  val intervalo: Int = 5
   
   fun cotizacionDolar(): Double {
-    val actualTimeStamp: Date
-    if(actualTimeStamp - timeStampCotizacion > intervalo)
+    // tomo la hora actual
+    val actualTimeStamp = LocalTime.now()
+    // verifico el timeOut
+    if(Duration.between(actualTimeStamp, timeStampCotizacion).getSeconds()/60 > intervalo)
+      // actualizo la ultima Cotizacion y su hora.
       timeStampCotizacion = actualTimeStamp
       ultimaCotizacionDolar = apiCurrency.convertirDolarA(codigoMoneda).toDouble()
+      
     return ultimaCotizacionDolar
   }
   
