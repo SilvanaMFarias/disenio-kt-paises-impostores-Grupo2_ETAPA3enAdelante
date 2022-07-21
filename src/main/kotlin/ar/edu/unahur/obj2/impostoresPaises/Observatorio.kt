@@ -79,10 +79,14 @@ object Observatorio {
   var paises :List<Pais> = listOf<Pais>()
   // Etapa 3 - Etapa 3 - Conectando con el mundo real 
  
+  // Servicio de cotizacion NO necesita adpater.
+  val apiCurrency = CurrencyConverterAPI(apiKey = "294dc89cf3f803ab8787")
+  var cotizacionPesoArgentino = apiCurrency.convertirDolarA("ARS")
+  
   // Servicio a adaptar.
-  val api = RestCountriesAPI()
+  val apiCountry = RestCountriesAPI()
   // Servicio adaptado.
-  val apiAdaptada = AdaptadorAPI(api)
+  val apiAdaptada = AdaptadorAPI(apiCountry)
       // A partir de acá podemos utilizar los metodos de API pero nos va a devolver
       // en vez del formato <Country> devuelve <Pais> gracias al adaptador.
       //
