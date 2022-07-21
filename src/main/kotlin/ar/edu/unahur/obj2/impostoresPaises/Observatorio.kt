@@ -1,6 +1,9 @@
 package ar.edu.unahur.obj2.impostoresPaises
 
+import ar.edu.unahur.obj2.impostoresPaises.Pais
+import ar.edu.unahur.obj2.impostoresPaises.*
 import ar.edu.unahur.obj2.impostoresPaises.api.Country
+import ar.edu.unahur.obj2.impostoresPaises.api.CurrencyConverterAPI
 import ar.edu.unahur.obj2.impostoresPaises.api.RestCountriesAPI
 
 interface interfaceAPI {
@@ -73,8 +76,7 @@ class AdaptadorAPI(val adaptee: RestCountriesAPI): interfaceAPI {
  * object que simplifica la implementación del patrón.
  */
 object Observatorio {
-  var paises :List<Pais>
-
+  var paises :List<Pais> = listOf<Pais>()
   // Etapa 3 - Etapa 3 - Conectando con el mundo real 
  
   // Servicio a adaptar.

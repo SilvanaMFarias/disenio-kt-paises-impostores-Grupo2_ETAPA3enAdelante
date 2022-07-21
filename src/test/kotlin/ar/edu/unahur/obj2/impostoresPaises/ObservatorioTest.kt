@@ -48,9 +48,12 @@ class ObservatorioTest : DescribeSpec ({
     Observatorio.agregarPais(groenlandia)
     Observatorio.agregarPais(islandia)
   */
-
+  Observatorio
   describe("Test de Observatorio") {
-
+    it("API adapter") {
+      Observatorio.paises.size.shouldBe(250)
+      Observatorio.paises.map{n->n.nombre}.shouldBe("")
+    }
     it("Son limitrofes") {
       Observatorio.sonLimitrofes("Argentina", "Brasil").shouldBeTrue()
       Observatorio.sonLimitrofes("Chile", "Brasil").shouldBeFalse()

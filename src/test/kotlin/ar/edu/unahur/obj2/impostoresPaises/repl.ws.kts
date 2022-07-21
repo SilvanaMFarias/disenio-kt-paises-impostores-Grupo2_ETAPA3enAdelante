@@ -1,3 +1,4 @@
+import ar.edu.unahur.obj2.impostoresPaises.Observatorio
 import ar.edu.unahur.obj2.impostoresPaises.Pais
 import ar.edu.unahur.obj2.impostoresPaises.*
 import ar.edu.unahur.obj2.impostoresPaises.api.Country
@@ -10,12 +11,11 @@ import io.kotest.core.spec.style.DescribeSpec
 
 val api = RestCountriesAPI()
 val adapt = AdaptadorAPI(api)
-//adapt.adaptee.todosLosPaises()
-//Observatorio.paises
+adapt.adaptee.todosLosPaises()
 
 val allCountries: List<Country> = adapt.adaptee.todosLosPaises()
 allCountries
-/*
+allCountries.size
 val todosLosPaises: MutableList<Pais> = mutableListOf()
 var nombre: String = ""
 var codigoIso3: String =""
@@ -50,8 +50,6 @@ allCountries.forEach {
 }
 
 todosLosPaises.map{n->n.nombre}
-
-*/
 
 
 
