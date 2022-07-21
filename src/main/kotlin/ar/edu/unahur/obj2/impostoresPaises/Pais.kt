@@ -2,6 +2,8 @@ package ar.edu.unahur.obj2.impostoresPaises
 
 import kotlin.math.roundToInt
 import kotlin.reflect.jvm.internal.impl.types.AbstractTypeCheckerContext.SupertypesPolicy.None
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class Pais(
   val nombre: String,
@@ -10,16 +12,24 @@ class Pais(
   var superficie: Double,
   val continente: String,
   var codigoMoneda: String,
-  var cotizacionDolar: Double,
+//  var cotizacionDolar: Double,
   val bloquesRegionales: List<String>,
   val idiomasOficiales: List<String>) {
   val paisesLimitrofes: MutableList<String> = mutableListOf()
 
   // Servicio de cotizacion NO necesita adpater.
   val apiCurrency = CurrencyConverterAPI(apiKey = "294dc89cf3f803ab8787")
-    
-  fun actualizarCotizacion() {
-    cotizacionDolar = apiCurrency.convertirDolarA(codigoIso3)
+  
+  var ultimaCotizacionDolar: Double = 0.0
+  var timeStampCotizacion: Date
+  val intervalo: Int = 10
+  
+  fun cotizacionDolar(): Double {
+    val actualTimeStamp: Date
+    if(actualTimeStamp - timeStampCotizacion > intervalo)
+      timeStampCotizacion = actualTimeStamp
+      ultimaCotizacionDolar = apiCurrency.convertirDolarA(codigoMoneda).toDouble()
+    return ultimaCotizacionDolar
   }
   
   fun agregarPaisLimitrofe(pais: Pais) {
@@ -86,16 +96,16 @@ fun vecinoMasPoblado(): Pais {
  * ejemplo, si en Argentina la cotización es de 190 y en Bolivia de 6.89, no 
  * conviene ir de Argentina a Bolivia pero sí al revés.
  */
-  fun convieneIrDeComprasA(pais: Pais) = this.cotizacionDolar < pais.cotizacionDolar
+  fun convieneIrDeComprasA(pais: Pais) = this.cotizacionDolar() < pais.cotizacionDolar()
 /*
  * Conocer a cuánto equivale un determinado monto en la moneda local, 
  * transformado en la moneda del país de destino. Como la referencia que 
  * estamos tomando es el precio del dólar, la equivalencia se haría 
  * convirtiendo primero a dólar y luego a la moneda de destino.
  */
-  fun cambioADolar(montoMonedaLocal: Double): Double = montoMonedaLocal/cotizacionDolar
+  fun cambioADolar(montoMonedaLocal: Double): Double = montoMonedaLocal/cotizacionDolar()
 
-  fun cambioAMonedaLocal(montoDolar: Double): Double = montoDolar * cotizacionDolar
+  fun cambioAMonedaLocal(montoDolar: Double): Double = montoDolar * cotizacionDolar()
 
   fun aCuantoEquivaleEn(montoMonedaLocal: Double, pais: Pais): Double = pais.cambioAMonedaLocal(this.cambioADolar(montoMonedaLocal))
 }
