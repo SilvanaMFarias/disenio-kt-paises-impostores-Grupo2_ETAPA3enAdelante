@@ -15,6 +15,13 @@ class Pais(
   val idiomasOficiales: List<String>) {
   val paisesLimitrofes: MutableList<String> = mutableListOf()
 
+  // Servicio de cotizacion NO necesita adpater.
+  val apiCurrency = CurrencyConverterAPI(apiKey = "294dc89cf3f803ab8787")
+    
+  fun actualizarCotizacion() {
+    cotizacionDolar = apiCurrency.convertirDolarA(codigoIso3)
+  }
+  
   fun agregarPaisLimitrofe(pais: Pais) {
       paisesLimitrofes.add(pais.codigoIso3)
   }
