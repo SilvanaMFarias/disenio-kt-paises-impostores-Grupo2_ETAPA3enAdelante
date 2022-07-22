@@ -6,65 +6,6 @@ import ar.edu.unahur.obj2.impostoresPaises.api.Country
 import ar.edu.unahur.obj2.impostoresPaises.api.CurrencyConverterAPI
 import ar.edu.unahur.obj2.impostoresPaises.api.RestCountriesAPI
 
-interface interfaceAPI {
-	fun todosLosPaises(): List<Pais>
-
-  fun buscarPaisesPorNombre(nombre: String): List<Pais>
-
-  fun paisConCodigo(codigoIso3: String): Pais    
-}
-
-class AdaptadorAPI(val adaptee: RestCountriesAPI): interfaceAPI {
-
-  override fun todosLosPaises(): MutableList<Pais> {
-    val allCountries: List<Country> = adaptee.todosLosPaises()
-    val todosLosPaises: MutableList<Pais> = mutableListOf()
-    var nombre: String
-    var codigoIso3: String
-    var poblacion: Int
-    var superficie: Double
-    var continente: String
-    var codigoMoneda: String
-    var cotizacionDolar: Double
-    var bloquesRegionales: List<String>
-    var idiomasOficiales: List<String>
-    var paisesLimitrofes: List<String>
-    var pais: Pais
-
-    allCountries.forEach {
-      nombre = it.name
-      codigoIso3 = it.alpha3Code
-      poblacion = it.population.toInt()//Redefinir a poblacion como long
-      superficie = 0.00//it.area ?: it.population.toDouble()-Redefinir superficie como long
-      continente = it.region
-      codigoMoneda= "USD"//if (it.currencies?.first()?.code.orEmpty().isEmpty()) it.currencies!!.first().code else "USD"
-      //cotizacionDolar=0.00
-      bloquesRegionales= it.regionalBlocs!!.map{ b->b.name }
-      idiomasOficiales= it.languages.map{ b->b.name }
-      paisesLimitrofes= it.borders.orEmpty()
-
-      pais = Pais(nombre, codigoIso3, poblacion, superficie, continente, codigoMoneda, bloquesRegionales, idiomasOficiales)
-      pais.paisesLimitrofes.addAll(paisesLimitrofes)
-
-      todosLosPaises.add(pais)
-    }
-
-    //TODO("Ya estan los datos pedidos a la API, falta transformalos a lista de Paises.")
-    return todosLosPaises
-  }
-
-  override fun buscarPaisesPorNombre(nombre: String): List<Pais> {
-    val countries: List<Country>
-    countries = adaptee.buscarPaisesPorNombre(nombre)
-    TODO("Ya estan los datos pedidos a la API, falta transformalos a lista de Paises.")
-  }
-
-  override fun paisConCodigo(codigoIso3: String): Pais {
-    val country: Country
-    country = adaptee.paisConCodigo(codigoIso3)
-    TODO("Ya estan los datos pedidos a la API, falta transformalos a Pais.")
-  }
-}
 
 /*
  * Etapa 2 - Observatorio
@@ -79,21 +20,21 @@ object Observatorio {
   var paises :List<Pais> = listOf<Pais>()
   // Etapa 3 - Etapa 3 - Conectando con el mundo real 
 
-  // Servicio a adaptar.
-  val apiCountry = RestCountriesAPI()
-  // Servicio adaptado.
-  val apiAdaptada = AdaptadorAPI(apiCountry)
-      // A partir de acá podemos utilizar los metodos de API pero nos va a devolver
-      // en vez del formato <Country> devuelve <Pais> gracias al adaptador.
-      //
-      // Ejemplo: 	apiAdaptada.todosLosPaises(): List<Pais>
-      //            apiAdaptada.buscarPaisesPorNombre("Argentina"): List<Pais>
-      //            apiAdaptada.paisConCodigo("ARG"): Pais
-
-  // IMPORTANTE: Solamente al inicializar el Singleton se accede a la API por
-  // intermedio del adaptador para llenar la lista países con los datos que
-  // devuelve el servicio.
   init {
+    // Servicio a adaptar.
+    val apiCountry = RestCountriesAPI()
+    // Servicio adaptado.
+    val apiAdaptada = AdaptadorAPI(apiCountry)
+    // A partir de acá podemos utilizar los metodos de API pero nos va a devolver
+    // en vez del formato <Country> devuelve <Pais> gracias al adaptador.
+    //
+    // Ejemplo: 	apiAdaptada.todosLosPaises(): List<Pais>
+    //            apiAdaptada.buscarPaisesPorNombre("Argentina"): List<Pais>
+    //            apiAdaptada.paisConCodigo("ARG"): Pais
+
+    // IMPORTANTE: Solamente al inicializar el Singleton se accede a la API por
+    // intermedio del adaptador para llenar la lista países con los datos que
+    // devuelve el servicio.
     paises = apiAdaptada.todosLosPaises()
   }
 
@@ -116,11 +57,19 @@ object Observatorio {
   // Por otro lado, según la especificación del problema estos métodos pueden dar VERDADERO, FALSO o NULL
   // en el caso que alguno de los Strings no representen a algún pais válido.
 
-  fun sonLimitrofes(paisA: String, paisB: String): Boolean =
-    if (esPais(paisA) and esPais(paisB))
-      obtenerPais(paisA).esLimitrofeDe(obtenerPais(paisB))
-    else
+  fun sonLimitrofes(paisA: String, paisB: String): Boolean {
+
+    if (paisA == paisB){
+      throw Exception("Los países límitrofes no pueden ser iguales")
+    }
+
+    if (esPais(paisA) and esPais(paisB)) {
+      return obtenerPais(paisA).esLimitrofeDe(obtenerPais(paisB))
+    }
+    else{
       throw Exception("Algún pais es inválido.")
+    }
+  }
 /*
  * Saber si necesitan traducción para poder dialogar
  */

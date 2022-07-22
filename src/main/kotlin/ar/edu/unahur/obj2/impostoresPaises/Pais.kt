@@ -11,8 +11,8 @@ import kotlin.math.absoluteValue
 class Pais(
   val nombre: String,
   val codigoIso3: String,
-  var poblacion: Int,
-  var superficie: Double,
+  var poblacion: Long,
+  var superficie:Double,
   val continente: String,
   var codigoMoneda: String,
 //  var cotizacionDolar: Double,
@@ -66,7 +66,7 @@ class Pais(
  * redondeen este número de forma tal que devuelva un entero (pueden usar 
  * roundToInt() para eso).
  */
-  fun densidadPoblacional(): Int = (poblacion/superficie).roundToInt()
+  fun densidadPoblacional(): Int = (poblacion/superficie).toInt()
 /*
  * Conocer al vecino más poblado, que sería el país con mayor población dentro 
  * de la vecindad, que incluye tanto a los limítrofes como al país que 

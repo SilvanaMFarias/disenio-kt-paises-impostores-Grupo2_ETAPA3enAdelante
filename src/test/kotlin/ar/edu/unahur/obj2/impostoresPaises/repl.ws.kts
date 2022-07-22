@@ -12,7 +12,7 @@ val apiCurrency = CurrencyConverterAPI(apiKey = "294dc89cf3f803ab8787")
 var cotizacionPesoArgentino = apiCurrency.convertirDolarA("ARS")
 
 cotizacionPesoArgentino
-/*
+
 val api = RestCountriesAPI()
 val adapt = AdaptadorAPI(api)
 adapt.adaptee.todosLosPaises()
@@ -23,7 +23,7 @@ allCountries.size
 val todosLosPaises: MutableList<Pais> = mutableListOf()
 var nombre: String = ""
 var codigoIso3: String =""
-var poblacion: Int =0
+var poblacion: Long =0
 var superficie: Double =0.00
 var continente: String =""
 var codigoMoneda: String =""
@@ -36,25 +36,25 @@ var paisesLimitrofes: MutableList<String> = mutableListOf()
 allCountries.forEach {
     nombre = it.name
     codigoIso3 = it.alpha3Code
-    poblacion = it.population.toInt()//Redefinir a poblacion como long,
-    superficie = 0.00//it.area ?: it.population.toDouble()-Redefinir superficie como long,
+    poblacion = it.population//Redefinir a poblacion como long,
+    superficie = it.area ?: it.population.toDouble()
     continente = it.region
-    codigoMoneda= "1"//if (it.currencies?.first()?.code.orEmpty().isEmpty()) it.currencies!!.first().code else "USD"
-    cotizacionDolar=0.00
+    codigoMoneda= "USD"//it.currencies.first(). ?: "USD"
     bloquesRegionales= it.regionalBlocs!!.map{ b->b.name }
     idiomasOficiales= it.languages.map{ b->b.name }
     paisesLimitrofes=  mutableListOf()
 
 
-    val pais = Pais(nombre, codigoIso3, poblacion, superficie, continente, codigoMoneda, cotizacionDolar, bloquesRegionales, idiomasOficiales)
+    val pais = Pais(nombre, codigoIso3, poblacion, superficie, continente, codigoMoneda, bloquesRegionales, idiomasOficiales)
     pais.paisesLimitrofes.addAll(paisesLimitrofes)
 
 
     todosLosPaises.add(pais)
 }
 
-todosLosPaises.map{n->n.nombre}
-*/
+//todosLosPaises.map{n->n.nombre}
+val afga = allCountries.filter{p -> p.name == "Afghanistan"}.first()
+print(afga.currencies?.first()?.code)
 
 
 

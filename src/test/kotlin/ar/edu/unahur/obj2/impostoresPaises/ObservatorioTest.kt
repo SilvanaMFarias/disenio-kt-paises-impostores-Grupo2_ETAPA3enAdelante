@@ -85,7 +85,7 @@ class ObservatorioTest : DescribeSpec ({
       Observatorio.sonPotencialesAliados("Argentina", "Chile").shouldBe(true)
       shouldThrow<Exception> { Observatorio.sonPotencialesAliados("Argentina", "Disneyland") }
     }
-
+/*
     it("Conviene ir de compras") {
       Observatorio.convieneIrDeComprasDesdeA("Argentina", "Brazil").shouldBe(false)
       Observatorio.convieneIrDeComprasDesdeA("Brazil", "Argentina").shouldBe(true)
@@ -110,5 +110,7 @@ class ObservatorioTest : DescribeSpec ({
     it("Codigos ISO paises son mayor densidad poblacional") {
       Observatorio.codigosPaisesMasDensamentePoblados().shouldContainExactlyInAnyOrder("CHI", "ARG", "BRA","GRL","ISL")
     }
+
+ */
   }
 })
