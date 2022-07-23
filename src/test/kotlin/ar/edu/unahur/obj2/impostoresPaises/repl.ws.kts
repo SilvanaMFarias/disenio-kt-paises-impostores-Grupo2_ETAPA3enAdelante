@@ -1,9 +1,7 @@
 import ar.edu.unahur.obj2.impostoresPaises.Observatorio
 import ar.edu.unahur.obj2.impostoresPaises.Pais
 import ar.edu.unahur.obj2.impostoresPaises.*
-import ar.edu.unahur.obj2.impostoresPaises.api.Country
-import ar.edu.unahur.obj2.impostoresPaises.api.CurrencyConverterAPI
-import ar.edu.unahur.obj2.impostoresPaises.api.RestCountriesAPI
+import ar.edu.unahur.obj2.impostoresPaises.api.*
 import io.kotest.core.spec.style.DescribeSpec
 
 // Algunos ejemplos para que jueguen un poco
@@ -53,8 +51,11 @@ allCountries.forEach {
 }
 
 //todosLosPaises.map{n->n.nombre}
-val afga = allCountries.filter{p -> p.name == "Afghanistan"}.first()
-print(afga.currencies?.first()?.code)
-
+val argentina = allCountries.filter{p -> p.name == "Argentina"}.first()
+argentina
+val brasil = allCountries.filter{p -> p.name == "Brazil"}.first()
+brasil
+val chile = allCountries.filter{p -> p.name == "Chile"}.first()
+chile
 
 

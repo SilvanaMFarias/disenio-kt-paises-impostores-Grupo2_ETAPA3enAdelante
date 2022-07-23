@@ -66,7 +66,7 @@ class Pais(
  * redondeen este número de forma tal que devuelva un entero (pueden usar 
  * roundToInt() para eso).
  */
-  fun densidadPoblacional(): Int = (poblacion/superficie).toInt()
+  fun densidadPoblacional(): Int = (poblacion/superficie).roundToInt()
 /*
  * Conocer al vecino más poblado, que sería el país con mayor población dentro 
  * de la vecindad, que incluye tanto a los limítrofes como al país que 

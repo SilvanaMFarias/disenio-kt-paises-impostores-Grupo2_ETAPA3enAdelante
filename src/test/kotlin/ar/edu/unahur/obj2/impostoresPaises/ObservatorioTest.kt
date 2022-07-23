@@ -1,5 +1,6 @@
 import ar.edu.unahur.obj2.impostoresPaises.Observatorio
 import ar.edu.unahur.obj2.impostoresPaises.Pais
+import ar.edu.unahur.obj2.impostoresPaises.api.RestCountriesAPI
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.engine.toTestResult
@@ -49,7 +50,7 @@ class ObservatorioTest : DescribeSpec ({
     Observatorio.agregarPais(islandia)
   */
   // ¡para que haga el init Observatorio!
-  Observatorio
+  val observatorio = Observatorio(RestCountriesAPI())
 
   describe("Test de Observatorio") {
     /*
@@ -69,21 +70,21 @@ class ObservatorioTest : DescribeSpec ({
       Observatorio.obtenerPais("Chile").paisesLimitrofes.shouldBe("Chile")
 
        */
-      Observatorio.sonLimitrofes("Argentina", "Brazil").shouldBeTrue()
-      Observatorio.sonLimitrofes("Chile", "Brazil").shouldBeFalse()
-      shouldThrow<Exception> { Observatorio.sonLimitrofes("Argentina", "Disneyland") }
+      observatorio.sonLimitrofes("Argentina", "Brazil").shouldBeTrue()
+      observatorio.sonLimitrofes("Chile", "Brazil").shouldBeFalse()
+      shouldThrow<Exception> { observatorio.sonLimitrofes("Argentina", "Disneyland") }
     }
 
     it("Necesitan traduccion") {
-      Observatorio.necesitanTraduccion("Argentina", "Brazil").shouldBeTrue()
-      Observatorio.necesitanTraduccion("Argentina", "Chile").shouldBeFalse()
-      shouldThrow<Exception> { Observatorio.necesitanTraduccion("Argentina", "Disneyland") }
+      observatorio.necesitanTraduccion("Argentina", "Brazil").shouldBeTrue()
+      observatorio.necesitanTraduccion("Argentina", "Chile").shouldBeFalse()
+      shouldThrow<Exception> { observatorio.necesitanTraduccion("Argentina", "Disneyland") }
     }
 
     it("Son potenciales aliados") {
-      Observatorio.sonPotencialesAliados("Argentina", "Brazil").shouldBe(false)
-      Observatorio.sonPotencialesAliados("Argentina", "Chile").shouldBe(true)
-      shouldThrow<Exception> { Observatorio.sonPotencialesAliados("Argentina", "Disneyland") }
+      observatorio.sonPotencialesAliados("Argentina", "Brazil").shouldBe(false)
+      observatorio.sonPotencialesAliados("Argentina", "Chile").shouldBe(true)
+      shouldThrow<Exception> { observatorio.sonPotencialesAliados("Argentina", "Disneyland") }
     }
 /*
     it("Conviene ir de compras") {

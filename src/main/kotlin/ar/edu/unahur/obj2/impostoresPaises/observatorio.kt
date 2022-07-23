@@ -1,9 +1,5 @@
 package ar.edu.unahur.obj2.impostoresPaises
 
-import ar.edu.unahur.obj2.impostoresPaises.Pais
-import ar.edu.unahur.obj2.impostoresPaises.*
-import ar.edu.unahur.obj2.impostoresPaises.api.Country
-import ar.edu.unahur.obj2.impostoresPaises.api.CurrencyConverterAPI
 import ar.edu.unahur.obj2.impostoresPaises.api.RestCountriesAPI
 
 
@@ -16,15 +12,16 @@ import ar.edu.unahur.obj2.impostoresPaises.api.RestCountriesAPI
  * la misma instancia, en Kotlin para lograr esto tenemos la palabra reservada
  * object que simplifica la implementación del patrón.
  */
-object Observatorio {
-  var paises :List<Pais> = listOf<Pais>()
+class Observatorio (val apiCountry: RestCountriesAPI) {
+  //var paises :List<Pais> = listOf<Pais>()
   // Etapa 3 - Etapa 3 - Conectando con el mundo real 
+  val apiAdaptada = AdaptadorAPI(apiCountry)
 
-  init {
+  /*init {
     // Servicio a adaptar.
-    val apiCountry = RestCountriesAPI()
+    //val apiCountry = RestCountriesAPI()
     // Servicio adaptado.
-    val apiAdaptada = AdaptadorAPI(apiCountry)
+    //val apiAdaptada = AdaptadorAPI(apiCountry)
     // A partir de acá podemos utilizar los metodos de API pero nos va a devolver
     // en vez del formato <Country> devuelve <Pais> gracias al adaptador.
     //
@@ -36,7 +33,7 @@ object Observatorio {
     // intermedio del adaptador para llenar la lista países con los datos que
     // devuelve el servicio.
     paises = apiAdaptada.todosLosPaises()
-  }
+  }*/
 
   // Probablemente no se utilize más este método, ya que la lista es fija.
   // fun reset() { paises = mutableListOf<Pais>()}
@@ -44,9 +41,11 @@ object Observatorio {
   // Probablemente no se utilize más este método, ya que la lista es fija.
   // fun agregarPais(pais: Pais) = paises.add(pais)
 
-  fun esPais(nombrePais: String): Boolean = paises.any { p -> p.nombre == nombrePais }
+  fun paises() = apiAdaptada.todosLosPaises()
 
-  fun obtenerPais(nombrePais: String): Pais = paises.find { p -> p.nombre == nombrePais }!!
+  fun esPais(nombrePais: String): Boolean = paises().any { p -> p.nombre == nombrePais }
+
+  fun obtenerPais(nombrePais: String): Pais = paises().find { p -> p.nombre == nombrePais }!!
 /*
  * Para dos países en particular, cuyos nombres se envían por parámetro, se 
  * pide poder resolver las mismas consultas de la etapa anterior:
@@ -115,24 +114,24 @@ object Observatorio {
  * Obtener los códigos ISO de los 5 países con mayor densidad poblacional.
  */
   fun codigosPaisesMasDensamentePoblados(): List<String> =
-    paises.sortedByDescending { p->p.densidadPoblacional() }.take(5).map { p -> p.codigoIso3 }.orEmpty()
+    paises().sortedByDescending { p->p.densidadPoblacional() }.take(5).map { p -> p.codigoIso3 }.orEmpty()
 
 /*
  * Indicar el nombre del continente con más paises plurinacionales.
  */
 
   fun continenteConMasPaisesPlurinacionales(): String =
-    paises.filter { p -> p.esPlurinacional() }.groupBy { p->p.continente }.maxByOrNull { c -> c.value.size }!!.key
+    paises().filter { p -> p.esPlurinacional() }.groupBy { p->p.continente }.maxByOrNull { c -> c.value.size }!!.key
 
 /*
  * Conocer el promedio de densidad poblacional de los países insulares (o sea, 
  * aquellos países que son islas).
  */
-  fun hayPaisesInsulares(): Boolean = paises.any { p -> p.esUnaIsla() }
+  fun hayPaisesInsulares(): Boolean = paises().any { p -> p.esUnaIsla() }
 
   fun promedioDensidadPoblacionalPaisesInsulares(): Double {
     if (hayPaisesInsulares())
-      return paises.filter{ p -> p.esUnaIsla() }.run {
+      return paises().filter{ p -> p.esUnaIsla() }.run {
         (this.sumOf { p->p.densidadPoblacional() } / this.size).toDouble()
       }
     else
