@@ -14,6 +14,7 @@ class Pais(
     val idiomasOficiales: List<String>) {
 
     val paisesLimitrofes: MutableList<String> = mutableListOf()
+    val paisesLimitrofes2: MutableList<Pais> = mutableListOf()
 
     fun agregarPaisLimitrofe(pais: Pais) {
         paisesLimitrofes.add(pais.codigoIso3)

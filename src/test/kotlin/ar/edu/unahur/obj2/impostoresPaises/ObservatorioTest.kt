@@ -1,118 +1,144 @@
-import ar.edu.unahur.obj2.impostoresPaises.Observatorio
-import ar.edu.unahur.obj2.impostoresPaises.Pais
-import ar.edu.unahur.obj2.impostoresPaises.api.CurrencyConverterAPI
-import ar.edu.unahur.obj2.impostoresPaises.api.RestCountriesAPI
+package ar.edu.unahur.obj2.impostoresPaises
+import ar.edu.unahur.obj2.impostoresPaises.api.*
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
-import io.kotest.engine.toTestResult
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
-import io.kotest.matchers.doubles.plusOrMinus
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+import io.kotest.matchers.doubles.plusOrMinus
+import io.mockk.every
+import io.mockk.mockk
 
 class ObservatorioTest : DescribeSpec ({
 
-  // Observatorio.reset()
-  /*
-  val argentina = Pais( "Argentina", "ARG",47000000, 2780400.0, "America",
-    "ARS", 222.75, listOf("UNASUR", "MERCOSUR"), listOf("español","guarani","qom")
-  )
+    describe("Test de Observatorio") {
 
-  val brasil = Pais("Brasil","BRA",208388000,8515770.00,"America",
-    "REA",5.41, listOf("UNASUR", "MERCOSUR"), listOf("portugues")
-  )
+        val apiCountry = mockk<RestCountriesAPI>(relaxed = true)
+        val apiCurrency = mockk<CurrencyConverterAPI>(relaxed = true)
+        // En esta etapa pasamos el Singleton a una clase para mayor claridad en el código
+        //
+        // (COMPLETAR CON LO QUE SE COMPLICO PARA TOMAR ESTA DECISION)
+        //
+        val observatorio = Observatorio(apiCountry, apiCurrency)
 
-  val chile = Pais("Chile","CHI",18430408,756950.00,"America",
-    "CHI",975.71, listOf("UNASUR"), listOf("español","rapanui")
-  )
+        // Mock de la apiCurrency
+        every { apiCurrency.convertirDolarA("ARS") } returns 129.0
+        every { apiCurrency.convertirDolarA("REA") } returns 5.5
+        every { apiCurrency.convertirDolarA("CHI") } returns 925.0
+        every { apiCurrency.convertirDolarA("AUD") } returns 32.0
+        every { apiCurrency.convertirDolarA("DKK") } returns 1.44
+        every { apiCurrency.convertirDolarA("ISK") } returns 137.0
 
-  val australia = Pais(
-    "Australia","AUS",25900570,7741220.0,"Oceania",
-    "AUD", 1.23, listOf("OTAN"), listOf("ingles")
-  )
-  val groenlandia = Pais(
-    "Groenlandia","GRL",9876600,2166086.0,"America",
-    "DKK", 1.23, listOf("OTAN"), listOf("ingles", "danes")
-  )
-  val islandia = Pais(
-    "Islandia","ISL",457050,103000.0,"Europa",
-    "ISK", 1.23, listOf("OTAN"), listOf("ingles","islandes")
-  )
+        // Mock de la apiCountry
+        every { apiCountry.todosLosPaises() } returns listOf(
+            Country("Argentina", "ARG", "", "America", 47000000, 2780400.0,
+                listOf("BRA", "CHI"), listOf(Language("Español"), Language("Qom")),
+                listOf(RegionalBloc("","UNASUR"), RegionalBloc("", "MERCOSUR")),
+                listOf(Currency("ARS"))
+            ),
+            Country("Brasil", "BRA","","America",208388000, 8515770.00,
+                listOf("ARG"), listOf(Language("Portugues")),
+                listOf(RegionalBloc("","UNASUR"), RegionalBloc("", "MERCOSUR")),
+                listOf(Currency("REA"))
+            ),
+            Country("Chile", "CHI","","America",18430408, 756950.00,
+                listOf("ARG"), listOf(Language("Español"),Language("Rapanui")),
+                listOf(RegionalBloc("","UNASUR")),
+                listOf(Currency("CHI"))
+            ),
+            Country("Australia", "AUS","","Oceania",25900570, 7741220.0,
+                listOf(), listOf(Language("Inglés")),
+                listOf(RegionalBloc("","OTAN")),
+                listOf(Currency("AUD"))),
+            Country("Groenlandia", "GRL","","America",9876600, 2166086.0,
+                listOf(), listOf(Language("Inglés"), Language("Danés")),
+                listOf(RegionalBloc("","OTAN")),
+                listOf(Currency("DKK"))),
+            Country("Islandia", "ISL","","America",457050, 103000.0,
+                listOf(), listOf(Language("Inglés"), Language("Islandés")),
+                listOf(RegionalBloc("","OTAN")),
+                listOf(Currency("ISK")))
+            )
 
-    argentina.agregarPaisLimitrofeMutuo(chile)
-    argentina.agregarPaisLimitrofeMutuo(brasil)
+        every { apiCountry.paisConCodigo("ARG") } returns
+          Country("Argentina", "ARG", "", "America", 47000000, 2780400.0,
+            listOf("BRA", "CHI"), listOf(Language("Español"), Language("Qom")),
+            listOf(RegionalBloc("","UNASUR"), RegionalBloc("", "MERCOSUR")),
+            listOf(Currency("ARS"))
+          )
 
-    Observatorio.agregarPais(argentina)
-    Observatorio.agregarPais(brasil)
-    Observatorio.agregarPais(chile)
-    Observatorio.agregarPais(australia)
-    Observatorio.agregarPais(groenlandia)
-    Observatorio.agregarPais(islandia)
-  */
-  // ¡para que haga el init Observatorio!
-  val observatorio = Observatorio(RestCountriesAPI(), CurrencyConverterAPI(apiKey = "294dc89cf3f803ab8787"))
+        every { apiCountry.paisConCodigo("BRA") } returns
+          Country("Brasil", "BRA","","America",208388000, 8515770.00,
+              listOf("ARG"), listOf(Language("Portugues")),
+              listOf(RegionalBloc("","UNASUR"), RegionalBloc("", "MERCOSUR")),
+              listOf(Currency("REA"))
+          )
 
-  describe("Test de Observatorio") {
-    /*
-    it("API adapter") {
-      Observatorio.paises.size.shouldBe(250)
-      Observatorio.paises.map{n->n.nombre}.shouldBe("")
+        every { apiCountry.paisConCodigo("CHI") } returns
+          Country("Chile", "CHI","","America",18430408, 756950.00,
+              listOf("ARG"), listOf(Language("Español"),Language("Rapanui")),
+              listOf(RegionalBloc("","UNASUR")),
+              listOf(Currency("CHI"))
+          )
+
+        it("Son limitrofes") {
+            observatorio.obtenerPais("Argentina").paisesLimitrofes.shouldContainExactlyInAnyOrder("BRA","CHI")
+            observatorio.obtenerPais("Brasil").paisesLimitrofes.shouldContainExactlyInAnyOrder("ARG")
+            observatorio.obtenerPais("Chile").paisesLimitrofes.shouldContainExactlyInAnyOrder("ARG")
+
+            observatorio.obtenerPais("Argentina").paisesLimitrofes2.shouldContainExactlyInAnyOrder("BRA","CHI")
+            observatorio.obtenerPais("Brasil").paisesLimitrofes2.shouldContainExactlyInAnyOrder("ARG")
+            observatorio.obtenerPais("Chile").paisesLimitrofes2.shouldContainExactlyInAnyOrder("ARG")
+
+
+            observatorio.sonLimitrofes("Argentina", "Brasil").shouldBeTrue()
+            observatorio.sonLimitrofes("Chile", "Brasil").shouldBeFalse()
+            shouldThrow<Exception> { observatorio.sonLimitrofes("Argentina", "Disneyland") }
+        }
+
+        it("Vecino mas poblado") {
+            observatorio.vecinoMasPoblado("Argentina").nombre.shouldBe("Brasil")
+            observatorio.vecinoMasPoblado("Brasil").nombre.shouldBe("Brasil")
+            observatorio.vecinoMasPoblado("Chile").nombre.shouldBe("Argentina")
+            observatorio.vecinoMasPoblado("Australia").nombre.shouldBe("Australia")
+        }
+
+        it("Necesitan traduccion") {
+            observatorio.necesitanTraduccion("Argentina", "Brasil").shouldBeTrue()
+            observatorio.necesitanTraduccion("Argentina", "Chile").shouldBeFalse()
+            shouldThrow<Exception> { observatorio.necesitanTraduccion("Argentina", "Disneyland") }
+        }
+
+        it("Son potenciales aliados") {
+            observatorio.sonPotencialesAliados("Argentina", "Brasil").shouldBe(false)
+            observatorio.sonPotencialesAliados("Argentina", "Chile").shouldBe(true)
+            shouldThrow<Exception> { observatorio.sonPotencialesAliados("Argentina", "Disneyland") }
+        }
+
+        it("Conviene ir de compras") {
+            observatorio.convieneIrDeComprasDesdeA("Argentina", "Brasil").shouldBe(false)
+            observatorio.convieneIrDeComprasDesdeA("Brasil", "Argentina").shouldBe(true)
+            shouldThrow<Exception> { observatorio.convieneIrDeComprasDesdeA("Brazil", "Disneyland") }
+        }
+
+        it("A cuanto equivale") {
+            observatorio.aCuantoEquivaleEn(20000.00, "Argentina", "Brasil").shouldBe(848.60 plusOrMinus 10.00)
+            observatorio.aCuantoEquivaleEn(1485.00, "Brasil", "Argentina").shouldBe(34800.00 plusOrMinus 100.00)
+            shouldThrow<Exception> { observatorio.aCuantoEquivaleEn(20000.00, "Argentina", "Disneyland") }
+        }
+
+        it("Promedio densidad poblacional paises insulares") {
+            //australia densidad 3 - groenlandia densidad 5 - islandia densidad 4
+            observatorio.promedioDensidadPoblacionalPaisesInsulares().shouldBe(4.0)
+        }
+
+        it("Continente con mas paises plurinacionales") {
+            observatorio.continenteConMasPaisesPlurinacionales().shouldBe("America")
+        }
+
+        it("Codigos ISO paises son mayor densidad poblacional") {
+            observatorio.codigosPaisesMasDensamentePoblados().shouldContainExactlyInAnyOrder("CHI", "ARG", "BRA","GRL","ISL")
+        }
     }
-
-    */
-    it("Son limitrofes") {
-      /*
-      Observatorio.esPais("Argentina").shouldBeTrue()
-      Observatorio.esPais("Brazil").shouldBeTrue()
-      Observatorio.esPais("Chile").shouldBeTrue()
-      Observatorio.obtenerPais("Argentina").paisesLimitrofes.shouldBe("Argentina")
-      Observatorio.obtenerPais("Brazil").paisesLimitrofes.shouldBe("Brazil")
-      Observatorio.obtenerPais("Chile").paisesLimitrofes.shouldBe("Chile")
-
-       */
-      observatorio.sonLimitrofes("Argentina", "Brazil").shouldBeTrue()
-      observatorio.sonLimitrofes("Chile", "Brazil").shouldBeFalse()
-      shouldThrow<Exception> { observatorio.sonLimitrofes("Argentina", "Disneyland") }
-    }
-
-    it("Necesitan traduccion") {
-      observatorio.necesitanTraduccion("Argentina", "Brazil").shouldBeTrue()
-      observatorio.necesitanTraduccion("Argentina", "Chile").shouldBeFalse()
-      shouldThrow<Exception> { observatorio.necesitanTraduccion("Argentina", "Disneyland") }
-    }
-
-    it("Son potenciales aliados") {
-      observatorio.sonPotencialesAliados("Argentina", "Brazil").shouldBe(false)
-      observatorio.sonPotencialesAliados("Argentina", "Chile").shouldBe(true)
-      shouldThrow<Exception> { observatorio.sonPotencialesAliados("Argentina", "Disneyland") }
-    }
-/*
-    it("Conviene ir de compras") {
-      Observatorio.convieneIrDeComprasDesdeA("Argentina", "Brazil").shouldBe(false)
-      Observatorio.convieneIrDeComprasDesdeA("Brazil", "Argentina").shouldBe(true)
-      shouldThrow<Exception> { Observatorio.convieneIrDeComprasDesdeA("Brazil", "Disneyland") }
-    }
-
-    it("A cuanto equivale") {
-      Observatorio.aCuantoEquivaleEn(20000.00, "Argentina", "Brazil").shouldBe(848.60 plusOrMinus 0.10)
-      Observatorio.aCuantoEquivaleEn(1485.00, "Brazil", "Argentina").shouldBe(35000.00 plusOrMinus 60.00)
-      shouldThrow<Exception> { Observatorio.aCuantoEquivaleEn(20000.00, "Argentina", "Disneyland") }
-    }
-
-    it("Promedio densidad poblacional paises insulares") {
-      //australia densidad 3 - groenlandia densidad 5 - islandia densidad 4
-      Observatorio.promedioDensidadPoblacionalPaisesInsulares().shouldBe(4.0)
-    }
-
-    it("Continente con mas paises plurinacionales") {
-      Observatorio.continenteConMasPaisesPlurinacionales().shouldBe("America")
-    }
-
-    it("Codigos ISO paises son mayor densidad poblacional") {
-      Observatorio.codigosPaisesMasDensamentePoblados().shouldContainExactlyInAnyOrder("CHI", "ARG", "BRA","GRL","ISL")
-    }
-
- */
-  }
 })

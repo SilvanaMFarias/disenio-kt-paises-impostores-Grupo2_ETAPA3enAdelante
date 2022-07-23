@@ -27,6 +27,7 @@ class AdaptadorAPI(val adaptee: RestCountriesAPI, val apiCurrency: CurrencyConve
         val todosLosPaises: MutableList<Pais> = mutableListOf()
         var codigoMoneda: String
         var pais: Pais
+        var limitrofes : MutableList<Pair<String,List<String>>> = mutableListOf()
 
         allCountries.forEach {
             codigoMoneda = if (it.currencies!!.isNotEmpty()) it.currencies!!.first().code else "USD"
@@ -42,9 +43,18 @@ class AdaptadorAPI(val adaptee: RestCountriesAPI, val apiCurrency: CurrencyConve
                 it.regionalBlocs!!.map { b -> b.name },
                 it.languages.map { b -> b.name }
             )
+            limitrofes.add(Pair(it.alpha3Code, it.borders.orEmpty()))
             pais.paisesLimitrofes.addAll(it.borders.orEmpty())
 
             todosLosPaises.add(pais)
+        }
+        // La relacion con los objetos paises en limitrofes debe realizarse una vez que se
+        // crearon todos los paises, por eso se utiliza la lista de Pares (PAIS,LIMITROFES)
+        // para luego vincularlos.
+        limitrofes.forEach {
+            todosLosPaises.find { p->p.codigoIso3 == it.first }!!.paisesLimitrofes2.addAll(
+                todosLosPaises.filter { p -> it.second.contains(p.codigoIso3) }
+            )
         }
         return todosLosPaises
     }

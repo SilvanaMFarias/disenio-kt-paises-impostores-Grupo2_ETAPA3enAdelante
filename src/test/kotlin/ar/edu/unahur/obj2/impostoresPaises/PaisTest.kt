@@ -1,9 +1,11 @@
 package ar.edu.unahur.obj2.impostoresPaises
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.engine.toTestResult
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.doubles.plusOrMinus
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
@@ -74,6 +76,18 @@ class PaisTest : DescribeSpec ({
       brasil.esLimitrofeDe(chile).shouldBeFalse()
       islandia.esLimitrofeDe(argentina).shouldBeFalse()
       coreaDelSur.esLimitrofeDe(coreaDelNorte).shouldBeTrue()
+    }
+
+    it("Son limitrofes") {
+      argentina.paisesLimitrofes2.shouldContainExactlyInAnyOrder("BRA","CHI")
+      brasil.paisesLimitrofes2.shouldContainExactlyInAnyOrder("ARG")
+      chile.paisesLimitrofes2.shouldContainExactlyInAnyOrder("ARG")
+/*
+      observatorio.sonLimitrofes("Argentina", "Brasil").shouldBeTrue()
+      observatorio.sonLimitrofes("Chile", "Brasil").shouldBeFalse()
+      shouldThrow<Exception> { observatorio.sonLimitrofes("Argentina", "Disneyland") }
+
+*/
     }
 
     it("Necesita traduccion con") {
