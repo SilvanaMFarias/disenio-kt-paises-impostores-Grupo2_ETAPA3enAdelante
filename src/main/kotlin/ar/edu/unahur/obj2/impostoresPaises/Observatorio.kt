@@ -18,7 +18,7 @@ class Observatorio (val apiCountry: RestCountriesAPI, val apiCurrency: CurrencyC
     fun vecinoMasPoblado(nombrePais: String): Pais {
         if(esPais(nombrePais))
             with (obtenerPais(nombrePais)) {
-                return (this.paisesLimitrofes.map { cod -> paisPorCodigo(cod) } + this).maxByOrNull { p->p.poblacion }!!
+                return (this.paisesLimitrofes + this).maxByOrNull { p->p.poblacion }!!
             }
         else
             throw Exception("Pais es inválido.")
@@ -74,7 +74,7 @@ class Observatorio (val apiCountry: RestCountriesAPI, val apiCurrency: CurrencyC
                 (this.sumOf { p -> p.densidadPoblacional() } / this.size).toDouble()
             }
         else
-            return 0.00 // como no hay paises insulares el promedio es 0
-            // throw Exception("No hay países Insulares")
+            // return 0.00 // como no hay paises insulares el promedio es 0
+            throw Exception("No hay países Insulares")
     }
 }

@@ -42,12 +42,14 @@ allCountries.forEach {
     idiomasOficiales= it.languages.map{ b->b.name }
     paisesLimitrofes=  mutableListOf()
 
-
+/*
     val pais = Pais(nombre, codigoIso3, poblacion, superficie, continente, codigoMoneda, 123.0, bloquesRegionales, idiomasOficiales)
     pais.paisesLimitrofes.addAll(paisesLimitrofes)
 
 
     todosLosPaises.add(pais)
+
+ */
 }
 
 //todosLosPaises.map{n->n.nombre}

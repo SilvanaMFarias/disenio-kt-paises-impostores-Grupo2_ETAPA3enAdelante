@@ -83,15 +83,6 @@ class ObservatorioTest : DescribeSpec ({
           )
 
         it("Son limitrofes") {
-            observatorio.obtenerPais("Argentina").paisesLimitrofes.shouldContainExactlyInAnyOrder("BRA","CHI")
-            observatorio.obtenerPais("Brasil").paisesLimitrofes.shouldContainExactlyInAnyOrder("ARG")
-            observatorio.obtenerPais("Chile").paisesLimitrofes.shouldContainExactlyInAnyOrder("ARG")
-
-            observatorio.obtenerPais("Argentina").paisesLimitrofes2.shouldContainExactlyInAnyOrder("BRA","CHI")
-            observatorio.obtenerPais("Brasil").paisesLimitrofes2.shouldContainExactlyInAnyOrder("ARG")
-            observatorio.obtenerPais("Chile").paisesLimitrofes2.shouldContainExactlyInAnyOrder("ARG")
-
-
             observatorio.sonLimitrofes("Argentina", "Brasil").shouldBeTrue()
             observatorio.sonLimitrofes("Chile", "Brasil").shouldBeFalse()
             shouldThrow<Exception> { observatorio.sonLimitrofes("Argentina", "Disneyland") }

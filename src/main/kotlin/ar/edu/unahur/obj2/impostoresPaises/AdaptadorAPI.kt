@@ -43,8 +43,7 @@ class AdaptadorAPI(val adaptee: RestCountriesAPI, val apiCurrency: CurrencyConve
                 it.regionalBlocs!!.map { b -> b.name },
                 it.languages.map { b -> b.name }
             )
-            limitrofes.add(Pair(it.alpha3Code, it.borders.orEmpty()))
-            pais.paisesLimitrofes.addAll(it.borders.orEmpty())
+            limitrofes.add(Pair(it.name, it.borders.orEmpty()))
 
             todosLosPaises.add(pais)
         }
@@ -52,7 +51,7 @@ class AdaptadorAPI(val adaptee: RestCountriesAPI, val apiCurrency: CurrencyConve
         // crearon todos los paises, por eso se utiliza la lista de Pares (PAIS,LIMITROFES)
         // para luego vincularlos.
         limitrofes.forEach {
-            todosLosPaises.find { p->p.codigoIso3 == it.first }!!.paisesLimitrofes2.addAll(
+            todosLosPaises.find { p -> p.nombre == it.first }!!.paisesLimitrofes.addAll(
                 todosLosPaises.filter { p -> it.second.contains(p.codigoIso3) }
             )
         }
