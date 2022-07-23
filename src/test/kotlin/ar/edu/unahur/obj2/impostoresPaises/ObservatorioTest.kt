@@ -1,5 +1,6 @@
 import ar.edu.unahur.obj2.impostoresPaises.Observatorio
 import ar.edu.unahur.obj2.impostoresPaises.Pais
+import ar.edu.unahur.obj2.impostoresPaises.api.CurrencyConverterAPI
 import ar.edu.unahur.obj2.impostoresPaises.api.RestCountriesAPI
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
@@ -50,7 +51,7 @@ class ObservatorioTest : DescribeSpec ({
     Observatorio.agregarPais(islandia)
   */
   // ¡para que haga el init Observatorio!
-  val observatorio = Observatorio(RestCountriesAPI())
+  val observatorio = Observatorio(RestCountriesAPI(), CurrencyConverterAPI(apiKey = "294dc89cf3f803ab8787"))
 
   describe("Test de Observatorio") {
     /*

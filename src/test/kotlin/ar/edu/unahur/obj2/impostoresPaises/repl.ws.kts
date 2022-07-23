@@ -12,7 +12,7 @@ var cotizacionPesoArgentino = apiCurrency.convertirDolarA("ARS")
 cotizacionPesoArgentino
 
 val api = RestCountriesAPI()
-val adapt = AdaptadorAPI(api)
+val adapt = AdaptadorAPI(api,apiCurrency)
 adapt.adaptee.todosLosPaises()
 
 val allCountries: List<Country> = adapt.adaptee.todosLosPaises()
@@ -43,7 +43,7 @@ allCountries.forEach {
     paisesLimitrofes=  mutableListOf()
 
 
-    val pais = Pais(nombre, codigoIso3, poblacion, superficie, continente, codigoMoneda, bloquesRegionales, idiomasOficiales)
+    val pais = Pais(nombre, codigoIso3, poblacion, superficie, continente, codigoMoneda, 123.0, bloquesRegionales, idiomasOficiales)
     pais.paisesLimitrofes.addAll(paisesLimitrofes)
 
 

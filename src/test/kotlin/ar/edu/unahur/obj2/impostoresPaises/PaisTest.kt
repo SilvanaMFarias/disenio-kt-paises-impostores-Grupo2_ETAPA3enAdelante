@@ -12,28 +12,28 @@ import kotlinx.coroutines.internal.artificialFrame
 class PaisTest : DescribeSpec ({
 
   val argentina = Pais( "Argentina", "ARG",47000000, 2780400.0, "America",
-    "ARS",  listOf("UNASUR", "MERCOSUR"), listOf("español","guarani","qom")
+    "ARS",  129.0, listOf("UNASUR", "MERCOSUR"), listOf("español","guarani","qom")
   )
 
   val brasil = Pais("Brasil","BRA",208388000,8515770.00,"America",
-    "BRL", listOf("UNASUR", "MERCOSUR"), listOf("portugues","español")
+    "BRL", 5.5, listOf("UNASUR", "MERCOSUR"), listOf("portugues","español")
   )
 
   val chile = Pais("Chile","CHI",18430408,756950.00,"America",
-    "CLP", listOf("UNASUR"), listOf("español","rapanui")
+    "CLP", 925.0, listOf("UNASUR"), listOf("español","rapanui")
   )
 
   val coreaDelNorte = Pais("Corea del Norte","CDN",25026772,120540.00,"Asia",
-    "KPW", listOf(), listOf("coreano")
+    "KPW", 10.0, listOf(), listOf("coreano")
   )
 
   val coreaDelSur = Pais("Corea del Sur","CDs",51709000,100339.00,"Asia",
-    "KRW", listOf(), listOf("coreano")
+    "KRW", 1.0, listOf(), listOf("coreano")
   )
 
   val islandia = Pais(
     "Islandia","ISL",457050,103000.0,"Europa",
-    "ISK",  listOf("OTAN"), listOf("ingles","islandes")
+    "ISK",  137.0, listOf("OTAN"), listOf("ingles","islandes")
   )
 
   argentina.agregarPaisLimitrofeMutuo(chile)
@@ -67,15 +67,6 @@ class PaisTest : DescribeSpec ({
       islandia.densidadPoblacional().shouldBe(4)
     }
 
-    it("Vecino mas poblado") {
-      argentina.vecinoMasPoblado().shouldBe(brasil)
-      brasil.vecinoMasPoblado().shouldBe(brasil)
-      chile.vecinoMasPoblado().shouldBe(argentina)
-      coreaDelNorte.vecinoMasPoblado().shouldBe(coreaDelSur)
-      coreaDelSur.vecinoMasPoblado().shouldBe(coreaDelSur)
-      islandia.vecinoMasPoblado().shouldBe(islandia)
-    }
-
     it("Es limitrofe de") {
       argentina.esLimitrofeDe(chile).shouldBeTrue()
       argentina.esLimitrofeDe(brasil).shouldBeTrue()
@@ -106,14 +97,14 @@ class PaisTest : DescribeSpec ({
       argentina.convieneIrDeComprasA(chile).shouldBeTrue()
       brasil.convieneIrDeComprasA(argentina).shouldBeTrue()
       chile.convieneIrDeComprasA(argentina).shouldBeFalse()
-      coreaDelSur.convieneIrDeComprasA(coreaDelNorte).shouldBeFalse()
-      coreaDelNorte.convieneIrDeComprasA(coreaDelSur).shouldBeTrue()
+      coreaDelSur.convieneIrDeComprasA(coreaDelNorte).shouldBeTrue()
+      coreaDelNorte.convieneIrDeComprasA(coreaDelSur).shouldBeFalse()
     }
 
     it("A cuanto equivale") {
-      argentina.aCuantoEquivaleEn(20000.00, brasil).shouldBe(848.60 plusOrMinus 0.10)
-      brasil.aCuantoEquivaleEn(1485.00, argentina).shouldBe(35000.00 plusOrMinus 20.00)
-      argentina.aCuantoEquivaleEn(100000.00, chile).shouldBe(716750.00 plusOrMinus 10.00)
+      argentina.aCuantoEquivaleEn(20000.00, brasil).shouldBe(850.00 plusOrMinus 5.00)
+      brasil.aCuantoEquivaleEn(1485.00, argentina).shouldBe(34800.00 plusOrMinus 50.00)
+      argentina.aCuantoEquivaleEn(100000.00, chile).shouldBe(717000.00 plusOrMinus 100.00)
     }
   }
 })
