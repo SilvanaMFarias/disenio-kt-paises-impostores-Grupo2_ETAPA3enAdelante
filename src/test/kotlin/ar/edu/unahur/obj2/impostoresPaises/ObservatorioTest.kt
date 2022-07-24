@@ -16,11 +16,8 @@ class ObservatorioTest : DescribeSpec ({
 
         val apiCountry = mockk<RestCountriesAPI>(relaxed = true)
         val apiCurrency = mockk<CurrencyConverterAPI>(relaxed = true)
-        // En esta etapa pasamos el Singleton a una clase para mayor claridad en el código
-        //
-        // (COMPLETAR CON LO QUE SE COMPLICO PARA TOMAR ESTA DECISION)
-        //
-        val observatorio = Observatorio(apiCountry, apiCurrency)
+
+        Observatorio.setApis(apiCountry, apiCurrency)
 
         // Mock de la apiCurrency
         every { apiCurrency.convertirDolarA("ARS") } returns 129.0
@@ -83,53 +80,53 @@ class ObservatorioTest : DescribeSpec ({
           )
 
         it("Son limitrofes") {
-            observatorio.sonLimitrofes("Argentina", "Brasil").shouldBeTrue()
-            observatorio.sonLimitrofes("Chile", "Brasil").shouldBeFalse()
-            shouldThrow<Exception> { observatorio.sonLimitrofes("Argentina", "Disneyland") }
+            Observatorio.sonLimitrofes("Argentina", "Brasil").shouldBeTrue()
+            Observatorio.sonLimitrofes("Chile", "Brasil").shouldBeFalse()
+            shouldThrow<Exception> { Observatorio.sonLimitrofes("Argentina", "Disneyland") }
         }
 
         it("Vecino mas poblado") {
-            observatorio.vecinoMasPoblado("Argentina").nombre.shouldBe("Brasil")
-            observatorio.vecinoMasPoblado("Brasil").nombre.shouldBe("Brasil")
-            observatorio.vecinoMasPoblado("Chile").nombre.shouldBe("Argentina")
-            observatorio.vecinoMasPoblado("Australia").nombre.shouldBe("Australia")
+            Observatorio.vecinoMasPoblado("Argentina").nombre.shouldBe("Brasil")
+            Observatorio.vecinoMasPoblado("Brasil").nombre.shouldBe("Brasil")
+            Observatorio.vecinoMasPoblado("Chile").nombre.shouldBe("Argentina")
+            Observatorio.vecinoMasPoblado("Australia").nombre.shouldBe("Australia")
         }
 
         it("Necesitan traduccion") {
-            observatorio.necesitanTraduccion("Argentina", "Brasil").shouldBeTrue()
-            observatorio.necesitanTraduccion("Argentina", "Chile").shouldBeFalse()
-            shouldThrow<Exception> { observatorio.necesitanTraduccion("Argentina", "Disneyland") }
+            Observatorio.necesitanTraduccion("Argentina", "Brasil").shouldBeTrue()
+            Observatorio.necesitanTraduccion("Argentina", "Chile").shouldBeFalse()
+            shouldThrow<Exception> { Observatorio.necesitanTraduccion("Argentina", "Disneyland") }
         }
 
         it("Son potenciales aliados") {
-            observatorio.sonPotencialesAliados("Argentina", "Brasil").shouldBe(false)
-            observatorio.sonPotencialesAliados("Argentina", "Chile").shouldBe(true)
-            shouldThrow<Exception> { observatorio.sonPotencialesAliados("Argentina", "Disneyland") }
+            Observatorio.sonPotencialesAliados("Argentina", "Brasil").shouldBe(false)
+            Observatorio.sonPotencialesAliados("Argentina", "Chile").shouldBe(true)
+            shouldThrow<Exception> { Observatorio.sonPotencialesAliados("Argentina", "Disneyland") }
         }
 
         it("Conviene ir de compras") {
-            observatorio.convieneIrDeComprasDesdeA("Argentina", "Brasil").shouldBe(false)
-            observatorio.convieneIrDeComprasDesdeA("Brasil", "Argentina").shouldBe(true)
-            shouldThrow<Exception> { observatorio.convieneIrDeComprasDesdeA("Brazil", "Disneyland") }
+            Observatorio.convieneIrDeComprasDesdeA("Argentina", "Brasil").shouldBe(false)
+            Observatorio.convieneIrDeComprasDesdeA("Brasil", "Argentina").shouldBe(true)
+            shouldThrow<Exception> { Observatorio.convieneIrDeComprasDesdeA("Brazil", "Disneyland") }
         }
 
         it("A cuanto equivale") {
-            observatorio.aCuantoEquivaleEn(20000.00, "Argentina", "Brasil").shouldBe(848.60 plusOrMinus 10.00)
-            observatorio.aCuantoEquivaleEn(1485.00, "Brasil", "Argentina").shouldBe(34800.00 plusOrMinus 100.00)
-            shouldThrow<Exception> { observatorio.aCuantoEquivaleEn(20000.00, "Argentina", "Disneyland") }
+            Observatorio.aCuantoEquivaleEn(20000.00, "Argentina", "Brasil").shouldBe(848.60 plusOrMinus 10.00)
+            Observatorio.aCuantoEquivaleEn(1485.00, "Brasil", "Argentina").shouldBe(34800.00 plusOrMinus 100.00)
+            shouldThrow<Exception> { Observatorio.aCuantoEquivaleEn(20000.00, "Argentina", "Disneyland") }
         }
 
         it("Promedio densidad poblacional paises insulares") {
             //australia densidad 3 - groenlandia densidad 5 - islandia densidad 4
-            observatorio.promedioDensidadPoblacionalPaisesInsulares().shouldBe(4.0)
+            Observatorio.promedioDensidadPoblacionalPaisesInsulares().shouldBe(4.0)
         }
 
         it("Continente con mas paises plurinacionales") {
-            observatorio.continenteConMasPaisesPlurinacionales().shouldBe("America")
+            Observatorio.continenteConMasPaisesPlurinacionales().shouldBe("America")
         }
 
         it("Codigos ISO paises son mayor densidad poblacional") {
-            observatorio.codigosPaisesMasDensamentePoblados().shouldContainExactlyInAnyOrder("CHI", "ARG", "BRA","GRL","ISL")
+            Observatorio.codigosPaisesMasDensamentePoblados().shouldContainExactlyInAnyOrder("CHI", "ARG", "BRA","GRL","ISL")
         }
     }
 })

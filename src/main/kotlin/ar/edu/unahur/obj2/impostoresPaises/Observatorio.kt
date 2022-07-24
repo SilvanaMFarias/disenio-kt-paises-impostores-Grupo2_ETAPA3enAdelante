@@ -3,9 +3,13 @@ package ar.edu.unahur.obj2.impostoresPaises
 import ar.edu.unahur.obj2.impostoresPaises.api.CurrencyConverterAPI
 import ar.edu.unahur.obj2.impostoresPaises.api.RestCountriesAPI
 
-class Observatorio (val apiCountry: RestCountriesAPI, val apiCurrency: CurrencyConverterAPI) {
-    // Etapa 3 - Etapa 3 - Conectando con el mundo real
-    val apiAdaptada = AdaptadorAPI(apiCountry, apiCurrency)
+object Observatorio {
+    lateinit var apiAdaptada: AdaptadorAPI
+
+    fun setApis(apiCountry: RestCountriesAPI, apiCurrency: CurrencyConverterAPI) {
+        if (!this::apiAdaptada.isInitialized)
+            apiAdaptada = AdaptadorAPI(apiCountry, apiCurrency)
+    }
 
     fun paises() = apiAdaptada.todosLosPaises()
 
