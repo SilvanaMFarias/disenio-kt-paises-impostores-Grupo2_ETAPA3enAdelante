@@ -2,19 +2,19 @@
 import ar.edu.unahur.obj2.impostoresPaises.Pais
 import ar.edu.unahur.obj2.impostoresPaises.*
 import ar.edu.unahur.obj2.impostoresPaises.api.*
+import ar.edu.unahur.obj2.impostoresPaises.cli.Programa
 import io.kotest.core.spec.style.DescribeSpec
 
 // Algunos ejemplos para que jueguen un poco
 // con lo que devuelve la API
 val apiCurrency = CurrencyConverterAPI(apiKey = "294dc89cf3f803ab8787")
-var cotizacionPesoArgentino = apiCurrency.convertirDolarA("ARS")
-
-cotizacionPesoArgentino
+//var cotizacionPesoArgentino = apiCurrency.convertirDolarA("ARS")
+//cotizacionPesoArgentino
 
 val api = RestCountriesAPI()
 val adapt = AdaptadorAPI(api,apiCurrency)
 adapt.adaptee.todosLosPaises()
-
+/*
 val allCountries: List<Country> = adapt.adaptee.todosLosPaises()
 allCountries
 allCountries.size
@@ -59,5 +59,15 @@ val brasil = allCountries.filter{p -> p.name == "Brazil"}.first()
 brasil
 val chile = allCountries.filter{p -> p.name == "Chile"}.first()
 chile
+
+var apiCountry = RestCountriesAPI()
+var apiCurr = CurrencyConverterAPI(apiKey = "294dc89cf3f803ab8787")
+
+/*
+Observatorio.setApis(apiCountry, apiCurr)
+Observatorio.obtenerPais("Brazil")
+//Observatorio.promedioDensidadPoblacionalPaisesInsulares()
+adapt.adaptee.todosLosPaises()*/
+
 
 

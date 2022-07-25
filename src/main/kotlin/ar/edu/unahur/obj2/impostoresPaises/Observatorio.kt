@@ -13,7 +13,9 @@ object Observatorio {
 
     fun paises() = apiAdaptada.todosLosPaises()
 
-    fun paisPorCodigo(codigoPais: String) = apiAdaptada.paisConCodigo(codigoPais)
+    fun paisConCodigo(codigoIso: String) = apiAdaptada.paisConCodigo(codigoIso)
+
+    fun paisesConNombre(nombrePais: String) = apiAdaptada.buscarPaisesPorNombre(nombrePais)
 
     fun esPais(nombrePais: String): Boolean = paises().any { p -> p.nombre == nombrePais }
 
