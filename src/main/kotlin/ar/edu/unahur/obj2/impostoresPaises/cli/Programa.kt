@@ -137,7 +137,7 @@ object Programa {
                     }
                 }
 
-                "6" -> {  entradaSalida.escribirLinea("\nIngrese los dos países para verificar si son potenciales aliados:\n")
+                "6" -> {  entradaSalida.escribirLinea("\nIngrese los dos países para evaluar si conviene ir de compras de un país a otro:\n")
                     entradaSalida.escribirLinea("Primer País:")
                     var primerPais = entradaSalida.leerLinea()
                     entradaSalida.escribirLinea("Segundo País:")
