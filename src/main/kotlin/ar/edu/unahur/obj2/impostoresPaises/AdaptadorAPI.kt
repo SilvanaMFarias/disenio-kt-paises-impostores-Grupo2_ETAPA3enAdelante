@@ -39,7 +39,7 @@ class AdaptadorAPI(val adaptee: RestCountriesAPI, val apiCurrency: CurrencyConve
                 it.area ?: it.population.toDouble(),
                 it.region,
                 codigoMoneda,
-                0.00,//*apiCurrency.convertirDolarA(codigoMoneda)!!,*/
+                apiCurrency.convertirDolarA(codigoMoneda)!!,
                 it.regionalBlocs!!.map { b -> b.name },
                 it.languages.map { b -> b.name }
             )

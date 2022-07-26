@@ -1,9 +1,6 @@
 
-import ar.edu.unahur.obj2.impostoresPaises.Pais
 import ar.edu.unahur.obj2.impostoresPaises.*
 import ar.edu.unahur.obj2.impostoresPaises.api.*
-import ar.edu.unahur.obj2.impostoresPaises.cli.Programa
-import io.kotest.core.spec.style.DescribeSpec
 
 // Algunos ejemplos para que jueguen un poco
 // con lo que devuelve la API
